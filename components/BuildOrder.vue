@@ -92,37 +92,49 @@ function reset() {
 
 <template>
   <div class="max-w-md mx-auto">
-    <div
-      class="p-3 absolute top-2 right-2 h-12 bg-sky-950 border-white border-2"
-    >
-      {{ time }}
+    <div class="absolute top-2 right-2">
+      <span class="badge badge-primary">{{ time }}</span>
     </div>
-    <div
-      v-for="(buildStep, index) in buildOrder"
-      :key="index"
-      class="grid grid-cols-2 items-center m-2 p-3 bg-purple-500 font-bold"
-      :class="{ 'border-2 border-white text-4xl py-12': buildStep.active }"
-      ref="buildStepRefs"
-    >
-      <div>{{ buildStep.at }}</div>
-      <ul class="list-disc">
-        <li v-for="(instruction, index) in buildStep.instruction" :key="index">
-          {{ instruction }}
-        </li>
-      </ul>
-    </div>
-    <div class="sticky bottom-0 flex bg-white m-2">
-      <button
-        class="m-1 p-3 bg-purple-500 w-full h-24 border-2 border-white"
-        @click="startStop"
+    <ul class="timeline timeline-vertical">
+      <li
+        v-for="(buildStep, index) in buildOrder"
+        :key="index"
+        ref="buildStepRefs"
       >
+        <hr v-if="index !== 0" />
+        <div class="timeline-start">{{ buildStep.at }}</div>
+        <div class="timeline-middle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="h-5 w-5"
+            :class="{ 'text-primary': buildStep.active }"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div class="timeline-end timeline-box p-5">
+          <ul class="list-disc">
+            <li
+              v-for="(instruction, index) in buildStep.instruction"
+              :key="index"
+            >
+              {{ instruction }}
+            </li>
+          </ul>
+        </div>
+        <hr />
+      </li>
+    </ul>
+    <div class="sticky bottom-0 grid grid-cols-2 gap-2 m-2">
+      <button class="btn btn-neutral btn-block" @click="reset">Reset</button>
+      <button class="btn btn-primary btn-block" @click="startStop">
         {{ running ? 'Stop' : 'Start' }}
-      </button>
-      <button
-        class="m-1 p-3 bg-purple-500 w-full h-24 border-2 border-white"
-        @click="reset"
-      >
-        Reset
       </button>
     </div>
   </div>
