@@ -23,6 +23,7 @@ const buildOrder = ref(
   props.buildOrderData.map((item) => ({
     ...item,
     active: false,
+    done: false,
   })),
 );
 const interval = ref<NodeJS.Timeout>();
@@ -48,6 +49,7 @@ function startStop() {
         }
         if (index !== 0) {
           tmp[index - 1].active = false;
+          tmp[index - 1].done = true;
         }
 
         tmp[index].active = true;
@@ -55,9 +57,9 @@ function startStop() {
         await nextTick();
 
         if (index !== 0) {
-          buildStepRefs.value[index - 1].scrollIntoView();
+          buildStepRefs.value[index - 1].scrollIntoView({ behavior: 'smooth' });
         } else {
-          buildStepRefs.value[index].scrollIntoView();
+          buildStepRefs.value[index].scrollIntoView({ behavior: 'smooth' });
         }
       }
     });
@@ -77,7 +79,9 @@ function startStop() {
 function reset() {
   clearInterval(interval.value);
   time.value = 1;
-  window.scrollTo(0, 0);
+  document
+    .querySelectorAll('.timeline-vertical > li')[0]
+    .scrollIntoView({ behavior: 'smooth' });
   if (!buildOrder) {
     return;
   }
@@ -86,6 +90,7 @@ function reset() {
       return;
     }
     item.active && (buildOrder.value[index].active = false);
+    item.done = false;
   });
 }
 </script>
@@ -102,27 +107,28 @@ function reset() {
         ref="buildStepRefs"
       >
         <hr v-if="index !== 0" />
-        <div class="timeline-start">{{ buildStep.at }}</div>
+        <div
+          class="timeline-start text-lg"
+          :class="{ 'text-accent': buildStep.active }"
+        >
+          {{ buildStep.at }}
+        </div>
         <div class="timeline-middle">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            class="h-5 w-5"
-            :class="{ 'text-primary': buildStep.active }"
+          <span
+            class="material-symbols-outlined"
+            :class="{ 'text-accent': buildStep.active }"
+            >{{
+              buildStep.done ? 'check_circle' : 'radio_button_unchecked'
+            }}</span
           >
-            <path
-              fill-rule="evenodd"
-              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-              clip-rule="evenodd"
-            />
-          </svg>
         </div>
         <div
           class="timeline-end timeline-box p-5"
-          :class="{ 'border border-primary': buildStep.active }"
+          :class="[
+            buildStep.active ? 'border-accent font-bold' : 'border-neutral',
+          ]"
         >
-          <ul class="list-disc">
+          <ul class="list-none text-lg">
             <li
               v-for="(instruction, index) in buildStep.instruction"
               :key="index"

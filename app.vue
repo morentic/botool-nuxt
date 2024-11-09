@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import 'material-symbols';
+useHead({
+  htmlAttrs: {
+    'data-theme': 'dracula',
+  },
+});
+</script>
 
 <template>
   <div class="bg-base">
