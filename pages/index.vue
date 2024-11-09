@@ -29,7 +29,7 @@ const { data: buildOrderSteps } = await useAsyncData<BuildOrderType[]>(
 </script>
 
 <template>
-  <div class="h-lvh overflow-hidden">
+  <div class="h-dvh overflow-hidden">
     <BuildOrder :buildOrderData="buildOrderSteps ?? []"></BuildOrder>
   </div>
 </template>
