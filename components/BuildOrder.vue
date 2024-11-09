@@ -10,7 +10,7 @@ const props = defineProps({
   }>,
 });
 
-const running = ref(false);
+const running = ref<boolean>(false);
 const time = ref(1);
 
 const buildStepRefs = ref<Array<HTMLDivElement>>([]);
@@ -29,9 +29,9 @@ const interval = ref<NodeJS.Timeout>();
 
 function startStop() {
   clearInterval(interval.value);
-  running.value = !running;
+  running.value = !running.value;
 
-  if (!running) {
+  if (!running.value) {
     return;
   }
 
