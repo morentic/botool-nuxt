@@ -17,6 +17,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "daisyui": "^4.12.14",
     "prettier": "3.3.3"
   }
 }
