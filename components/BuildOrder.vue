@@ -118,7 +118,10 @@ function reset() {
             />
           </svg>
         </div>
-        <div class="timeline-end timeline-box p-5">
+        <div
+          class="timeline-end timeline-box p-5"
+          :class="{ 'border border-primary': buildStep.active }"
+        >
           <ul class="list-disc">
             <li
               v-for="(instruction, index) in buildStep.instruction"
@@ -131,7 +134,7 @@ function reset() {
         <hr />
       </li>
     </ul>
-    <div class="sticky bottom-0 grid grid-cols-2 gap-2 m-2">
+    <div class="sticky bottom-2 grid grid-cols-2 gap-2 m-2">
       <button class="btn btn-neutral btn-block" @click="reset">Reset</button>
       <button class="btn btn-primary btn-block" @click="startStop">
         {{ running ? 'Stop' : 'Start' }}
