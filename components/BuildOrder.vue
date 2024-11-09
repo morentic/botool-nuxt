@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { nextTick, ref, toRefs } from 'vue';
 
+const router = useRouter();
+
 const props = defineProps({
   buildOrderData: Array<{
     id: string;
@@ -97,6 +99,9 @@ function reset() {
 
 <template>
   <div class="max-w-md mx-auto">
+    <div class="absolute top-2 left-2 z-10">
+      <a @click="router.back()" class="link link-neutral">Back</a>
+    </div>
     <div class="absolute top-2 right-2">
       <span class="badge badge-primary">{{ time }}</span>
     </div>
